@@ -4,7 +4,11 @@ import nltk
 import csv
 
 # Initialize Elasticsearch and SentenceTransformer
-es = Elasticsearch()
+es = Elasticsearch(
+    hosts=["http://localhost:9200"],
+    timeout=50
+)
+
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
 # Define Elasticsearch index settings
@@ -28,12 +32,17 @@ def index_lyrics_embeddings(filename):
             song_name = row['SName']
             lyrics = row['Lyric'].lower()
             sentences = nltk.tokenize.sent_tokenize(lyrics)
+            #TODO: add lemmatizer and stemmed words
             for sentence in sentences:
                 embedding = model.encode([sentence])
+                # print(embedding.tolist())
+                # print(type(embedding.tolist()))
+                # print(type(embedding.tolist()[0]))
+                embedding_flat_list = embedding.tolist()[0]
                 document = {
                     "song_name": song_name,
                     "lyric": sentence,
-                    "embedding": embedding.tolist()
+                    "embedding": embedding_flat_list
                 }
                 es.index(index='lyrics', document=document)
 
