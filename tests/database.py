@@ -2,6 +2,7 @@ from elasticsearch import Elasticsearch
 from sentence_transformers import SentenceTransformer
 import nltk
 import csv
+from tqdm import tqdm
 
 # Initialize Elasticsearch and SentenceTransformer
 es = Elasticsearch(
@@ -28,16 +29,14 @@ es.indices.create(index='lyrics', body=index_settings, ignore=400)  # ignore 400
 def index_lyrics_embeddings(filename):
     with open(filename, 'r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
-        for row in reader:
+        # Wrap the reader with tqdm to display progress
+        for row in tqdm(reader, desc="Indexing lyrics"):
             song_name = row['SName']
             lyrics = row['Lyric'].lower()
             sentences = nltk.tokenize.sent_tokenize(lyrics)
             #TODO: add lemmatizer and stemmed words
             for sentence in sentences:
                 embedding = model.encode([sentence])
-                # print(embedding.tolist())
-                # print(type(embedding.tolist()))
-                # print(type(embedding.tolist()[0]))
                 embedding_flat_list = embedding.tolist()[0]
                 document = {
                     "song_name": song_name,

@@ -3,7 +3,10 @@ from sentence_transformers import SentenceTransformer
 import nltk
 
 # Initialize Elasticsearch and SentenceTransformer
-es = Elasticsearch()
+es = Elasticsearch(
+    hosts=["http://localhost:9200"],
+    timeout=50
+)
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
 def standard_lyrics_search(query):
@@ -21,7 +24,7 @@ def semantic_lyrics_search(query):
             "query": {"match_all": {}},
             "script": {
                 "source": "cosineSimilarity(params.query_vector, 'embedding') + 1.0",
-                "params": {"query_vector": query_embedding.tolist()}
+                "params": {"query_vector": query_embedding.tolist()[0]}
             }
         }
     }
