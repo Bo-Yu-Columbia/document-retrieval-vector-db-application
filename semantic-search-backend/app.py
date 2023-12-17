@@ -80,6 +80,7 @@ class SearchResult(graphene.ObjectType):
     song_name = graphene.String()
     lyric = graphene.String()
     score = graphene.Float()
+    singer = graphene.String()  # Add this if you have singer information
 
 class Query(graphene.ObjectType):
     semantic_lyrics_search = graphene.List(SearchResult, query=graphene.String())
@@ -98,14 +99,26 @@ class Query(graphene.ObjectType):
         }
 
         response = es.search(index="lyrics", body={"query": script_query}, size=10)
+        results = []
 
-        return [
-            SearchResult(
+        for hit in response['hits']['hits']:
+            result = SearchResult(
                 song_name=hit['_source']['song_name'],
                 lyric=hit['_source']['lyric'],
-                score=hit['_score']
-            ) for hit in response['hits']['hits']
-        ]
+                score=hit['_score'],
+                singer=hit['_source'].get('singer', 'Unknown')  # Adjust based on your data
+            )
+            results.append(result)
+
+            # Print each result
+            print("Song Name:", result.song_name)
+            print("Lyric:", result.lyric)
+            print("Score:", result.score)
+            print("Singer:", result.singer)
+            print("-" * 50)  # Separator for readability
+
+        return results
+
 
 schema = graphene.Schema(query=Query)
 

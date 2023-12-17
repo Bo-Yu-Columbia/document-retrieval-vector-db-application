@@ -1,3 +1,56 @@
+// // src/components/SemanticSearch.js
+// import React, { useState } from 'react';
+// import axios from 'axios';
+//
+// const SemanticSearch = () => {
+//     const [query, setQuery] = useState('');
+//     const [results, setResults] = useState([]);
+//
+//     const handleSearch = async () => {
+//         try {
+//             const response = await axios.post('http://127.0.0.1:5000/graphql', {
+//                 query: `
+//                     query SemanticSearch($query: String!) {
+//                         semanticLyricsSearch(query: $query) {
+//                             songName
+//                             lyric
+//                             score
+//                         }
+//                     }
+//                 `,
+//                 variables: { query }
+//             });
+//             console.log("Query with Variables:", { query });
+//
+//             setResults(response.data.data.semanticLyricsSearch);
+//         } catch (error) {
+//             console.error('Error fetching semantic search results', error);
+//         }
+//     };
+//
+//     return (
+//         <div>
+//             <input
+//                 type="text"
+//                 value={query}
+//                 onChange={(e) => setQuery(e.target.value)}
+//                 placeholder="Search for lyrics..."
+//             />
+//             <button onClick={handleSearch}>Search</button>
+//             <div>
+//                 {results.map((result, index) => (
+//                     <div key={index}>
+//                         <h3>{result.songName}</h3>
+//                         <p>{result.lyric} (Score: {result.score})</p>
+//                     </div>
+//                 ))}
+//             </div>
+//         </div>
+//     );
+// };
+//
+// export default SemanticSearch;
+
 // src/components/SemanticSearch.js
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -5,6 +58,44 @@ import axios from 'axios';
 const SemanticSearch = () => {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
+
+    const searchContainerStyle = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%'
+    };
+
+    const inputStyle = {
+        padding: '10px',
+        width: '300px',
+        marginBottom: '10px',
+        borderRadius: '5px',
+        border: '1px solid #ccc'
+    };
+
+    const buttonStyle = {
+        padding: '10px 20px',
+        borderRadius: '5px',
+        border: 'none',
+        backgroundColor: '#3498db',
+        color: 'white',
+        cursor: 'pointer'
+    };
+
+    const resultsStyle = {
+        marginTop: '20px',
+        width: '300px',
+        textAlign: 'left'
+    };
+
+    const resultItemStyle = {
+        backgroundColor: 'white',
+        padding: '10px',
+        borderRadius: '5px',
+        marginBottom: '10px',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+    };
 
     const handleSearch = async () => {
         try {
@@ -29,17 +120,18 @@ const SemanticSearch = () => {
     };
 
     return (
-        <div>
+        <div style={searchContainerStyle}>
             <input
+                style={inputStyle}
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search for lyrics..."
             />
-            <button onClick={handleSearch}>Search</button>
-            <div>
+            <button style={buttonStyle} onClick={handleSearch}>Search</button>
+            <div style={resultsStyle}>
                 {results.map((result, index) => (
-                    <div key={index}>
+                    <div key={index} style={resultItemStyle}>
                         <h3>{result.songName}</h3>
                         <p>{result.lyric} (Score: {result.score})</p>
                     </div>
@@ -50,3 +142,4 @@ const SemanticSearch = () => {
 };
 
 export default SemanticSearch;
+
