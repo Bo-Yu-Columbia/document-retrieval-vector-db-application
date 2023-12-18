@@ -76,6 +76,16 @@ from flask_graphql import GraphQLView
 es = Elasticsearch(hosts=["http://localhost:9200"])
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
+def standard_lyrics_search(query):
+    response = es.search(index="lyrics", query={"match": {"lyric": query}})
+    return [
+        SearchResult(
+            song_name=hit['_source']['song_name'],
+            lyric=hit['_source']['lyric'],
+            score=None  # Score is not applicable for standard search
+        ) for hit in response['hits']['hits']
+    ]
+
 class SearchResult(graphene.ObjectType):
     song_name = graphene.String()
     lyric = graphene.String()
@@ -86,6 +96,7 @@ class Query(graphene.ObjectType):
     semantic_lyrics_search = graphene.List(SearchResult, query=graphene.String())
 
     def resolve_semantic_lyrics_search(self, info, query):
+        standard_lyrics_search = graphene.List(SearchResult, query=graphene.String())
         query_embedding = model.encode([query.lower()]).tolist()[0]
 
         script_query = {
@@ -118,6 +129,9 @@ class Query(graphene.ObjectType):
             print("-" * 50)  # Separator for readability
 
         return results
+
+    def resolve_standard_lyrics_search(self, info, query):
+        return standard_lyrics_search(query)
 
 
 schema = graphene.Schema(query=Query)

@@ -45,5 +45,25 @@ def index_lyrics_embeddings(filename):
                 }
                 es.index(index='lyrics', document=document)
 
+def index_lyrics_all_embeddings(filename):
+    with open(filename, 'r', encoding='utf-8') as file:
+        reader = csv.DictReader(file)
+        # Wrap the reader with tqdm to display progress
+        for row in tqdm(reader, desc="Indexing lyrics"):
+            song_name = row['SName']
+            lyrics = row['Lyric'].lower()
+            sentences = nltk.tokenize.sent_tokenize(lyrics)
+            #TODO: add lemmatizer and stemmed words
+            for sentence in sentences:
+                embedding = model.encode([sentence])
+                embedding_flat_list = embedding.tolist()[0]
+                document = {
+                    "song_name": song_name,
+                    "lyric": sentence,
+                    "embedding": embedding_flat_list
+                }
+                es.index(index='lyrics-all', document=document)
+
 if __name__ == '__main__':
-    index_lyrics_embeddings('../data/lyrics-toy-data1000.csv')
+    # index_lyrics_embeddings('../data/lyrics-toy-data1000.csv')
+    index_lyrics_all_embeddings(r"/Users/yubo/Downloads/data_lyrics_all/lyrics-data.csv")
