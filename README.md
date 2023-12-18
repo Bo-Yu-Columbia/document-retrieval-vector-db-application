@@ -19,3 +19,7 @@ Here's a look at the user interface of the application:
 <img src="github/ui.png" alt="UI Screenshot" width="300"/> 
 
 [//]: # (## Architecture)
+
+And here is a look at the search result of text:"love and peace":
+
+<img src="github/search_result.png" alt="Result Screenshot" width="300"/>
