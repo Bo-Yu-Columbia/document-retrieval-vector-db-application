@@ -16,6 +16,6 @@ Semantic search uses NLP techniques to find lyrics based on the context and mean
 Here's a look at the user interface of the application:
 
 [//]: # (![UI Screenshot]&#40;.github/ui.png&#41;)
-<img src=".github/ui.png" alt="UI Screenshot" width="300"/> <!-- Adjust width as needed -->
+<img src="github/ui.png" alt="UI Screenshot" width="300"/> 
 
 [//]: # (## Architecture)
