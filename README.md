@@ -11,15 +11,7 @@ Standard search allows users to find lyrics using traditional text search method
 ### Semantic Lyrics Search
 Semantic search uses NLP techniques to find lyrics based on the context and meaning of the query.
 
-## User Interface
+### Image-Lyrics Search
+Image to text then embeddings for lyrics querying
 
-Here's a look at the user interface of the application:
-
-[//]: # (![UI Screenshot]&#40;.github/ui.png&#41;)
-<img src="github/ui.png" alt="UI Screenshot" width="300"/> 
-
-[//]: # (## Architecture)
-
-And here is a look at the search result of text:"love and peace":
-
-<img src="github/search_result.png" alt="Result Screenshot" width="300"/>
+Project Google drive folder: https://drive.google.com/drive/folders/1u38UGXZhmKgGd1lUB8NRusKovejqwGBK?usp=drive_link See final report for more details
