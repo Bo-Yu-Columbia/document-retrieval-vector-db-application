@@ -13,7 +13,7 @@
 #                 print(sentence)
 #             print("\n")
 # Usage example
-# tokenize_lyrics('../data/lyrics-toy-data1000.csv')
+# tokenize_lyrics('../sample-data/lyrics-toy-data1000.csv')
 
 
 import csv
@@ -44,6 +44,6 @@ def normalize_and_tokenize_lyrics(filename):
                 print(" ".join(normalized_words))
 
 if __name__ == '__main__':
-    normalize_and_tokenize_lyrics('../data/lyrics-toy-data1000.csv')
+    normalize_and_tokenize_lyrics('../sample-data/lyrics-toy-data1000.csv')
 
 

@@ -32,4 +32,4 @@ def generate_lyrics_embeddings(filename):
                 print(embedding.shape)
                 print("\n")
 if __name__ == '__main__':
-    generate_lyrics_embeddings('../data/lyrics-toy-data1000.csv')
+    generate_lyrics_embeddings('../sample-data/lyrics-toy-data1000.csv')

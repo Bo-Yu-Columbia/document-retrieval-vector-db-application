@@ -51,9 +51,16 @@ def image_lyrics_search(query):
             song_name=hit['_source']['song_name'],
             lyric=hit['_source']['lyric'],
             score=hit['_score'],
-            singer=hit['_source'].get('singer', 'Unknown')  # Adjust based on your data
+            singer=hit['_source'].get('singer', 'Unknown')  # Adjust based on your sample-data
         )
-        results.append(result)
+        # results.append(result)
+        result_dict = {
+            'song_name': result.song_name,
+            'lyric': result.lyric,
+            'score': result.score,
+            'singer': result.singer
+        }
+        results.append(result_dict)
 
         # Print each result
         print("Song Name:", result.song_name)
@@ -75,7 +82,6 @@ class SearchResult(graphene.ObjectType):
 class Query(graphene.ObjectType):
     semantic_lyrics_search = graphene.List(SearchResult, query=graphene.String())
     standard_lyrics_search = graphene.List(SearchResult, query=graphene.String())
-    image_lyrics_search = graphene.List(SearchResult, query=graphene.String())
 
     def resolve_semantic_lyrics_search(self, info, query):
         query_embedding = model.encode([query.lower()]).tolist()[0]
@@ -127,7 +133,7 @@ class Query(graphene.ObjectType):
                 song_name=hit['_source']['song_name'],
                 lyric=hit['_source']['lyric'],
                 score=hit['_score'],
-                singer=hit['_source'].get('singer', 'Unknown')  # Adjust based on your data
+                singer=hit['_source'].get('singer', 'Unknown')  # Adjust based on your sample-data
             )
             results.append(result)
 
@@ -143,14 +149,12 @@ class Query(graphene.ObjectType):
     def resolve_standard_lyrics_search(self, info, query):
         return standard_lyrics_search(query)
 
-    # def resolve_image_lyrics_search(self, info, query):
-    #     return image_lyrics_search(query)
-
 
 schema = graphene.Schema(query=Query)
 
 app = Flask(__name__)
 CORS(app, resources={r"/graphql/*": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/upload": {"origins": "http://localhost:3000"}})
 app.add_url_rule('/graphql', view_func=GraphQLView.as_view('graphql', schema=schema, graphiql=True))
 
 
@@ -179,7 +183,7 @@ def upload_file():
     print("Extracted Text:", extracted_text)
     search_results = image_lyrics_search(extracted_text)
     print("Search Results:", search_results)
-    return search_results
+    return jsonify({'results': search_results})
 
 
 if __name__ == '__main__':

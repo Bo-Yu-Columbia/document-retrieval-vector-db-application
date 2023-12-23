@@ -29,7 +29,7 @@ def process_image_with_openai(base64_image):
                 "content": [
                     {
                         "type": "text",
-                        "text": "tell me what is in this picture using sentence as concise as possible"
+                        "text": "tell me what is in this picture using one sentence as concise as possible"
                     },
                     {
                         "type": "image_url",

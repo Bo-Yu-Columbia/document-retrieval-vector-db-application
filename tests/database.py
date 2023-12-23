@@ -65,5 +65,5 @@ def index_lyrics_all_embeddings(filename):
                 es.index(index='lyrics-all', document=document)
 
 if __name__ == '__main__':
-    # index_lyrics_embeddings('../data/lyrics-toy-data1000.csv')
+    # index_lyrics_embeddings('../sample-data/lyrics-toy-data1000.csv')
     index_lyrics_all_embeddings(r"/Users/yubo/Downloads/data_lyrics_all/lyrics-data.csv")
