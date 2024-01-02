@@ -1,7 +1,7 @@
 # document-retrieval-vector-db-application - Semantic Lyrics Search Application
 Final Project for ELEN-6776 Content Storage and Distribution Networks
 
-This project is a full-stack web application that allows users to search for song lyrics using both standard and semantic search techniques. It uses Elasticsearch for data storage and retrieval, a Python Flask backend with GraphQL for handling search queries, with React.js on front-end.
+This project is a full-stack web application that allows users to search for song lyrics using both standard and semantic search techniques. It uses Elasticsearch for data storage and retrieval, a Python Flask back-end with GraphQL for handling search queries, with React.js on front-end.
 
 ## Features
 
